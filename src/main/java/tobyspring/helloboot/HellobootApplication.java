@@ -27,6 +27,8 @@ public class HellobootApplication {
 		WebServer webServer = serverFactory.getWebServer(new ServletContextInitializer() {
 			@Override
 			public void onStartup(ServletContext servletContext) throws ServletException {
+				HelloController helloController = new HelloController();
+
 				// 새로운 서블릿을 등록
 				servletContext.addServlet("frontController", new HttpServlet() {
 					@Override
@@ -35,12 +37,14 @@ public class HellobootApplication {
 						if (req.getRequestURI().equals("/hello") && req.getMethod().equals(HttpMethod.GET.name())) {
 							String name = req.getParameter("name");
 
+							String ret = helloController.hello(name);
+
 							// 응답 상태 코드 설정 (200 OK)
 							resp.setStatus(HttpStatus.OK.value());
 							// 응답 헤더 설정 (ContentType을 "text/plain"으로 설정)
 							resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
 							// 응답 본문에 "Hello Servlet" 출력
-							resp.getWriter().println("Hello " + name);
+							resp.getWriter().println(ret);
 						}
 						else if (req.getRequestURI().equals("/user")) {
 
