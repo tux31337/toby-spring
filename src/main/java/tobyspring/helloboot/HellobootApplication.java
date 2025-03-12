@@ -10,6 +10,7 @@ import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactor
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,10 @@ import java.io.IOException;
 public class HellobootApplication {
 
 	public static void main(String[] args) {
+		GenericApplicationContext applicationContext = new GenericApplicationContext();
+		applicationContext.registerBean(HelloController.class);
+		applicationContext.refresh();
+
 		// 톰캣 기반의 서블릿 웹 서버 팩토리 생성
 		ServletWebServerFactory serverFactory = new TomcatServletWebServerFactory();
 
@@ -27,7 +32,6 @@ public class HellobootApplication {
 		WebServer webServer = serverFactory.getWebServer(new ServletContextInitializer() {
 			@Override
 			public void onStartup(ServletContext servletContext) throws ServletException {
-				HelloController helloController = new HelloController();
 
 				// 새로운 서블릿을 등록
 				servletContext.addServlet("frontController", new HttpServlet() {
@@ -37,17 +41,16 @@ public class HellobootApplication {
 						if (req.getRequestURI().equals("/hello") && req.getMethod().equals(HttpMethod.GET.name())) {
 							String name = req.getParameter("name");
 
+							HelloController helloController = applicationContext.getBean(HelloController.class);
 							String ret = helloController.hello(name);
 
-							// 응답 상태 코드 설정 (200 OK)
-							resp.setStatus(HttpStatus.OK.value());
+							// 응답 상태 코드 설정 (200 OK) 200 은 명시적으로 넣지 않아도 된다. servlet container가 error 가 안나면 200을 넣음.
+							// resp.setStatus(HttpStatus.OK.value());
 							// 응답 헤더 설정 (ContentType을 "text/plain"으로 설정)
-							resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
+							// resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
+							resp.setContentType(MediaType.TEXT_PLAIN_VALUE);
 							// 응답 본문에 "Hello Servlet" 출력
 							resp.getWriter().println(ret);
-						}
-						else if (req.getRequestURI().equals("/user")) {
-
 						}
 						else {
 							resp.setStatus(HttpStatus.NOT_FOUND.value());
