@@ -7,10 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 @RestController
@@ -22,17 +19,12 @@ public class HelloController  {
     }
 
     @GetMapping("/hello")
-    public String hello(String name) {
+    public String hello(@RequestParam("name") String name) {
+        System.out.println("여기는ㄷ ㅡㄹ어오나????");
         System.out.println(name);
         if (name == null || name.trim().length() == 0) throw  new IllegalArgumentException();
 
         return helloService.sayHello(name);
     }
-
-    @org.springframework.web.bind.annotation.ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
-    }
-
 
 }
