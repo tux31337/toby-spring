@@ -15,13 +15,16 @@ import java.util.Objects;
 public class HelloController {
     private final HelloService helloService;
 
-    public HelloController(HelloService helloService, ApplicationContext applicationContext) {
+    public HelloController(HelloService helloService) {
         this.helloService = helloService;
     }
 
     @GetMapping("/hello")
     public String hello(String name) {
-        return helloService.sayHello(Objects.requireNonNull(name));
+        System.out.println("Received name: '" + name + "'");
+        if (name == null || name.trim().length() == 0) throw new IllegalArgumentException();
+
+        return helloService.sayHello(name);
     }
 
 }
