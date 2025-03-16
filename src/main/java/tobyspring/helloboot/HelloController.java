@@ -14,13 +14,9 @@ import java.util.Objects;
 @RestController
 public class HelloController {
     private final HelloService helloService;
-    private ApplicationContext applicationContext;
 
     public HelloController(HelloService helloService, ApplicationContext applicationContext) {
         this.helloService = helloService;
-        this.applicationContext =applicationContext;
-
-        System.out.println("sprong contaienr 자기 자신인 applicationContext가 자동으로 들어오나 확인" + applicationContext);
     }
 
     @GetMapping("/hello")
@@ -28,9 +24,4 @@ public class HelloController {
         return helloService.sayHello(Objects.requireNonNull(name));
     }
 
-//    @Override
-//    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-//        System.out.println("applicationContext" + applicationContext);
-//        this.applicationContext = applicationContext;
-//    }
 }
