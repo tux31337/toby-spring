@@ -18,12 +18,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 }
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.ANNOTATION_TYPE,ElementType.METHOD})
+@Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD})
 @Test
 @interface UnitTest {
 
 }
-
 
 public class HelloServiceTest {
     @FastUnitTest
@@ -42,7 +41,5 @@ public class HelloServiceTest {
         String ret = decorator.sayHello("Test");
 
         Assertions.assertThat(ret).isEqualTo("*Test*");
-
-
     }
 }

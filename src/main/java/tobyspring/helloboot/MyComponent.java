@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE) // target 위치  컴포넌트가 클래스 위에
+@Target(ElementType.TYPE)
 @Component
 public @interface MyComponent {
 }

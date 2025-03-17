@@ -7,14 +7,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class HelloControllerTest {
     @Test
-    void helloControllerTest() {
-        HelloController helloController = new HelloController(name -> name);
+    void HelloController() {
+        HelloController helloController = new HelloController( name -> name);
 
         String ret = helloController.hello("Test");
 
-        Assertions.assertThat(ret).isEqualTo("Test");
+        assertThat(ret).isEqualTo("Test");
     }
-
+    
     @Test
     void failsHelloController() {
         HelloController helloController = new HelloController(name -> name);
@@ -26,6 +26,5 @@ public class HelloControllerTest {
         Assertions.assertThatThrownBy(() -> {
             helloController.hello("");
         }).isInstanceOf(IllegalArgumentException.class);
-
     }
 }
